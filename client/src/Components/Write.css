@@ -1,0 +1,45 @@
+/* Write.css */
+.write-container {
+    /* max-width: 600px; */
+    /* margin: 0 auto; */
+    padding: 20px;
+    background: rgb(255, 255, 255);
+    margin-top: 20px;
+    border-radius: 10px;
+    width: 84%;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.429);
+  }
+  
+  .quora-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .quora-ask-question {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .quora-submit-btn {
+    background-color: #103754;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .quora-submit-btn:hover {
+    background-color: #094275;
+  }
+  
+  .quora-editor {
+    min-height: fit-content;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  

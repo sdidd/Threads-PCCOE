@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import "./Post.css";
+import AnswerPop from "./AnswerPop";
+import "./popoupstyle.css";
 
 export default function Post(props) {
-  const { content, username, votes, email} = props;
+  const { content, username, votes, email, queId } = props;
   const [isLiked, setIsLiked] = useState(false);
   const [isbookmarked, setIsbookmarked] = useState(false);
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const openPopup = () => {
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -23,8 +35,9 @@ export default function Post(props) {
               alt="Profile"
             />
             <div className="person">
-            <span className="username">{username}</span>
-            <span className="email">{email}</span></div>
+              <span className="username">{username}</span>
+              <span className="email">{email}</span>
+            </div>
           </div>
           <div className="icons">
             <img
@@ -51,16 +64,28 @@ export default function Post(props) {
         className="lower"
         dangerouslySetInnerHTML={{ __html: content }}
       ></div>
-
-      <div className="bar">
-        <div className="votes">Votes: {votes}</div>
-        <div className="reply">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/1933/1933011.png"
-            width="15px"
-          />{" "}
-          Reply
+      <div>
+        <div className="bar">
+          <div className="votes">Votes: {votes}</div>
+          <div
+            className="reply"
+            style={{
+              width: "auto",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/1933/1933011.png"
+              width="20px"
+              style={{ marginRight: "10px" }}
+            />
+            <span onClick={openPopup}>Reply</span>
+          </div>
         </div>
+        {showPopup && (
+          <AnswerPop onClose={closePopup} que={content} queId={queId} />
+        )}
       </div>
     </div>
   );

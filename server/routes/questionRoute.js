@@ -3,6 +3,40 @@ const Question = require("../models/question");
 const User = require("../models/user");
 const router = express.Router();
 
+//To get Answers using answer route
+router.get("/answercontent/:questionId", async (req, res) => {
+  try {
+    const questionId = req.params.questionId;
+
+    const question = await Question.findById(questionId).populate({
+      path: "answers",
+      populate: {
+        path: "user",
+        select: "username email", // Include only username and email fields from User
+      },
+    });
+
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    const answerContentsArray = question.answers.map((answer) => {
+      return {
+        content: answer.content,
+        user: answer.user, // Populated user details with username and email
+        likes: answer.usersWhoLike.length, // Number of likes
+      };
+    });
+
+    // Reverse the order of the array
+    const reversedArray = answerContentsArray.reverse();
+
+    res.status(200).json(reversedArray);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // route for latest question
 router.get("/latest-questions", async (req, res) => {
   try {
@@ -22,7 +56,13 @@ router.post("/addque/:userId", async (req, res) => {
     const { userName, email, content, tag } = req.body;
     const userId = req.params.userId;
 
-    const question = new Question({ content, userId: userId, userName: userName, email: email, tag });
+    const question = new Question({
+      content,
+      userId: userId,
+      userName: userName,
+      email: email,
+      tag,
+    });
 
     const savedQuestion = await question.save();
 

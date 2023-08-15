@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
 // dotenv.config({ path: "./config.env" });
-const DB = "mongodb+srv://paraskhilosiya20:JQNZ7A3eApTtsVJP@cluster0.28mp73z.mongodb.net/Echat_DB?retryWrites=true&w=majority";
+const DB =
+  "mongodb+srv://paraskhilosiya20:JQNZ7A3eApTtsVJP@cluster0.28mp73z.mongodb.net/Echat_DB?retryWrites=true&w=majority";
 
 // Middleware
 const connectDB = () =>

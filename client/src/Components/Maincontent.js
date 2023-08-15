@@ -45,6 +45,8 @@ export default function Maincontent() {
       console.error("Error fetching latest questions:", error);
     }
   };
+  // console.log(posts);
+  // console.log(posts._id);
 
   // write post
 
@@ -60,10 +62,14 @@ export default function Maincontent() {
         // Decode the token to get the payload
         const payload = JSON.parse(atob(token.split(".")[1]));
         // Extract the userid from the payload
-        const user = {userid:payload._id, username:payload.username, email: payload.email};
+        const user = {
+          userid: payload._id,
+          username: payload.username,
+          email: payload.email,
+        };
         setUserid(user);
         console.log(payload);
-        
+
         console.log("User ID:", user);
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -85,10 +91,15 @@ export default function Maincontent() {
         return;
       }
 
-      const questionData = {  userName:user.username, email: user.email, content, tag };
-      console.log("Question data: ",questionData);
+      const questionData = {
+        userName: user.username,
+        email: user.email,
+        content,
+        tag,
+      };
+      console.log("Question data: ", questionData);
       const response = await fetch(
-        `http://localhost:3001/api/questionRoute/addque/${user.userid}`,
+        `http:/localhost:3001/api/questionRoute/addque/${user.userid}`,
         {
           method: "POST",
           headers: {
@@ -144,53 +155,54 @@ export default function Maincontent() {
     "image",
   ];
 
-  // return 
+  // return
   return (
     <>
-    <Navbar />
-    <div className="the-total-page">
-    <Sidebar handleItemClick={handleItemClick} handleItemClickSetting={handleItemClickSetting} /> 
-    <div className="maincontent">
-      
-      <div className="write-container">
-        <div className="quora-header">
-          <span className="quora-ask-question">Ask a Question</span>
-          <button className="quora-submit-btn" onClick={handleQuestion}>
-            +
-          </button>
-        </div>
-        <div
-          id="success-message"
-          className="alert alert-success"
-          role="alert"
-          style={{ display: "none" }}
-        >
-          Question added successfully!
-        </div>
-        <ReactQuill
-          value={content}
-          onChange={handleChange}
-          modules={modules}
-          formats={formats}
-          placeholder="Ask a question..."
-          className="quora-editor"
+      <Navbar />
+      <div className="the-total-page">
+        <Sidebar
+          handleItemClick={handleItemClick}
+          handleItemClickSetting={handleItemClickSetting}
         />
+        <div className="maincontent">
+          <div className="write-container">
+            <div className="quora-header">
+              <span className="quora-ask-question">Ask a Question</span>
+              <button className="quora-submit-btn" onClick={handleQuestion}>
+                +
+              </button>
+            </div>
+            <div
+              id="success-message"
+              className="alert alert-success"
+              role="alert"
+              style={{ display: "none" }}
+            >
+              Question added successfully!
+            </div>
+            <ReactQuill
+              value={content}
+              onChange={handleChange}
+              modules={modules}
+              formats={formats}
+              placeholder="Ask a question..."
+              className="quora-editor"
+            />
+          </div>
+
+          {posts.map((post) => (
+            <Post
+              key={post._id}
+              content={post.content}
+              username={post.userName}
+              votes={post.votes}
+              email={post.email}
+              queId={post._id}
+            />
+          ))}
+        </div>
       </div>
-
-
-      {posts.map((post) => (
-        <Post
-          key={post._id}
-          content={post.content}
-          username={post.userName}
-          votes={post.votes}
-          email={post.email}
-        />
-        
-      ))}
-    </div>
-    </div>
-    {isSettingsOpen && <SettingsPopup handleClose={handleClose} />}
+      {isSettingsOpen && <SettingsPopup handleClose={handleClose} />}
     </>
   );
 }
